@@ -1,65 +1,3 @@
-# TogCloud
-土狗云服务架构
-打算是对接全套阿里云的功能组件
-力争打造全球第一流的快速开发框架！！！！
-
-# tog架构
-
-
-# tog技术栈
-
-
-# 发版本日历
-## 2023-11-09
-+ 项目初始化
-+ 添加.gitignore文件
-```text
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-*.class
-target/*
-
-### logs ###
-/logs/
-*.log
-```
-+ 添加初始化的pom依赖
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.als.cloud</groupId>
-    <artifactId>tog</artifactId>
-    <version>${revision}</version>
-    <packaging>pom</packaging>
-    <url>https://leoalasiga.github.io/</url>
-</project>
-```
-+ 添加tog-framework的module,tog-framework的xml如下
-```xml
- <?xml version="1.0" encoding="UTF-8"?>
- <project xmlns="http://maven.apache.org/POM/4.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-     <modelVersion>4.0.0</modelVersion>
-     <parent>
-         <groupId>com.als.cloud</groupId>
-         <artifactId>tog</artifactId>
-         <version>${revision}</version>
-     </parent>
-     <artifactId>tog-framework</artifactId>
-     <packaging>pom</packaging>
-     <url>https://leoalasiga.github.io/</url>
- </project>
-```
-
-+ 添加tog-dependency的module，tog-dependency的xml如下
-```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -80,6 +18,13 @@ target/*
         <spring.boot.version>2.7.17</spring.boot.version>
         <spring.cloud.version>2021.0.5</spring.cloud.version>
         <spring.cloud.alibaba.version>2021.0.4.0</spring.cloud.alibaba.version>
+        <!-- Web 相关 -->
+        <knife4j.version>4.3.0</knife4j.version>
+        <springdoc.version>1.6.15</springdoc.version>
+        <!-- 工具类相关 -->
+        <lombok.version>1.18.30</lombok.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <hutool.version>5.8.22</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -106,6 +51,67 @@ target/*
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Spring 核心 -->
+            <dependency>
+                <!-- 用于生成自定义的 Spring @ConfigurationProperties 配置类的说明文件 -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+
+            <!-- Web 相关 -->
+            <dependency>
+                <groupId>org.springdoc</groupId> <!-- 接口文档 UI：默认 -->
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId> <!-- 接口文档 UI：knife4j -->
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId> <!-- 接口文档 UI：knife4j【网关专属】 -->
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+
+            <!-- 工具类相关 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.als.cloud</groupId>
+                <artifactId>tog-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId> <!-- use mapstruct-jdk8 for Java 8 or higher -->
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-jdk8</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -140,45 +146,3 @@ target/*
         </plugins>
     </build>
 </project>
-```
-+ 在tog-framework下添加tog common module，添加pom依赖
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>tog-framework</artifactId>
-        <groupId>com.als.cloud</groupId>
-        <version>${revision}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>tog-common</artifactId>
-    <packaging>jar</packaging>
-    <name>${project.artifactId}</name>
-    <description>定义基础pojo类、枚举、工具类等等</description>
-    <url>https://leoalasiga.github.io/</url>
-
-    <dependencies>
-        <!-- Spring 核心 -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <scope>provided</scope> <!-- 设置为 provided，只有工具类需要使用到 -->
-        </dependency>
-
-        <!-- 工具类相关 -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-    </dependencies>
-</project>
-```
-+ 在tog-framework下添加tog web module
-
-
-
-
-
-
